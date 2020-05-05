@@ -17,6 +17,9 @@ from ibapi.utils import iswrapper
 import matplotlib.pyplot as plt
 
 
+historical_stock_name = input('Enter real time stock: ')
+
+
 class IBApi(EWrapper, EClient):
     def __init__(self):
         EClient.__init__(self, self)
@@ -67,7 +70,7 @@ time.sleep(3)
 
 # Real time data
 apple_market_contract = Contract()
-apple_market_contract.symbol = 'AAPL'
+apple_market_contract.symbol = historical_stock_name
 apple_market_contract.secType = 'STK'
 apple_market_contract.exchange = 'SMART'
 apple_market_contract.currency = 'USD'
@@ -118,6 +121,9 @@ plt.ylabel('Price')
 plt.show()
 
 
+order_amount = input('How many would you like to order?')
+order_price = input('At what price?')
+
 # Orders
 while True:
     if isinstance(app.nextOrderId, int):
@@ -128,9 +134,9 @@ while True:
 
 order = Order()
 order.action = 'BUY'
-order.totalQuantity = 100
+order.totalQuantity = int(order_amount)
 order.orderType = 'LMT'
-order.lmtPrice = '1.2'
+order.lmtPrice = float(order_price)
 
 order_contract = Contract()
 order_contract.symbol = 'EUR'
@@ -147,7 +153,10 @@ time.sleep(4)
 app.cancelOrder(app.nextOrderId)
 
 
-time.sleep(4)
+time.sleep(10)
+
+
+input('Exit?')
 
 
 app.disconnect()
